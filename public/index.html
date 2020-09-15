@@ -1,1 +1,24 @@
-<script>window.location.href="https://investor.netlify.app/"</script>
+<script>var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      alert(this.responseText);
+    }
+  }
+  xmlhttp.open('PUT', 'https://investcloud.herokuapp.com/db', true);
+  xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+  xmlhttp.send(`{
+  "posts":[
+    {
+      "id" : 0,
+      "title": "Sec post!",
+      "content" : "My first content!"
+    }
+  ],
+  "comments" : [
+    {
+      "id": 0,
+      "content": "Such content!",
+      "username": "one_cool"
+    }
+  ]
+}`);</script>
