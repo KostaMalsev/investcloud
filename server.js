@@ -44,7 +44,7 @@ server.listen(port, () => {
 
 // HTTP Request
     function getRequest(url, callback) {
-        //var xmlhttp = new XMLHttpRequest();
+        var xmlhttp = new XMLHttpRequest();
         //http_.agent
         /*http_.get({
             hostname: url,
