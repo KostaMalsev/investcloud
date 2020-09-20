@@ -3,6 +3,8 @@ const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 3000;
+//const http_ = require('http');//for built in http support
+var XMLHttpRequest = require('xhr2');
 
 server.use(middlewares);
 server.use(router);
@@ -42,7 +44,15 @@ server.listen(port, () => {
 
 // HTTP Request
     function getRequest(url, callback) {
-        var xmlhttp = new XMLHttpRequest();
+        //var xmlhttp = new XMLHttpRequest();
+        //http_.agent
+        /*http_.get({
+            hostname: url,
+            port: port,
+            path: '/',
+            agent: false  // Create a new agent just for this one request
+        }, callback);
+        */
         xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 callback(JSON.parse(this.responseText));
