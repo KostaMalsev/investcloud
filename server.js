@@ -9,7 +9,7 @@ server.use(router);
 
 // To handle POST, PUT and PATCH you need to use a body-parser
 // You can use the one used by JSON Server
-server.use(jsonServer.bodyParser)
+/*server.use(jsonServer.bodyParser)
 server.use((req, res, next) => {
   //Change to enabgle remote storage CHANGE_200920
   /*
@@ -23,6 +23,7 @@ server.use((req, res, next) => {
   // Continue to JSON Server router
   next()
 })
+*/
 
 // Use default router
 server.listen(port, () => {
