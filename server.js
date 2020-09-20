@@ -1,15 +1,11 @@
-const jsonServer = require('json-server')
-const server = jsonServer.create()
-const router = jsonServer.router('db.json')
-const middlewares = jsonServer.defaults()
+const jsonServer = require('json-server');
+const server = jsonServer.create();
+const router = jsonServer.router('db.json');
+const middlewares = jsonServer.defaults();
+const port = process.env.PORT || 3000;
 
-// Set default middlewares (logger, static, cors and no-cache)
-server.use(middlewares)
-
-// Add custom routes before JSON Server router
-server.get('/echo', (req, res) => {
-  res.jsonp(req.query)
-})
+server.use(middlewares);
+server.use(router);
 
 // To handle POST, PUT and PATCH you need to use a body-parser
 // You can use the one used by JSON Server
@@ -26,8 +22,7 @@ server.use((req, res, next) => {
 })
 
 // Use default router
-server.use(router)
-server.listen((process.env.PORT || 3000), () => {
+server.listen(port, () => {
   getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
     putRequest(data, 'https://investcloud.herokuapp.com/db', () => { console.log('Restored from backup.') })
   }
