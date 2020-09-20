@@ -23,7 +23,7 @@ server.use((req, res, next) => {
   // Continue to JSON Server router
   next()
 })
-*/
+
 
 // Use default router
 server.listen(port, () => {
@@ -56,6 +56,7 @@ function putRequest(data, url, callback) {
     xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     xmlhttp.send(JSON.stringify(data));
 }
+*/
 
 /*
 const jsonServer = require('json-server');
