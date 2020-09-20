@@ -6,6 +6,7 @@ const port = process.env.PORT || 3000;
 
 server.use(middlewares);
 server.use(router);
+server.listen(port);
 
 // To handle POST, PUT and PATCH you need to use a body-parser
 // You can use the one used by JSON Server
