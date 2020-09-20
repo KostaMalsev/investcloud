@@ -15,6 +15,7 @@ server.use(router);
 server.use(jsonServer.bodyParser);
 server.use((req, res, next) => {
     //Change to enable remote storage CHANGE_200920
+    console.log(`${req.method}`);
     if (req.method === 'POST' || req.method === 'PUT') {
         getRequest('https://investcloud.herokuapp.com/profile', (data) => {
             putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285',
@@ -50,14 +51,7 @@ server.listen(port, () => {
 // HTTP Request
     function getRequest(url, callback) {
         var xmlhttp = new XMLHttpRequest();
-        //http_.agent
-        /*http_.get({
-            hostname: url,
-            port: port,
-            path: '/',
-            agent: false  // Create a new agent just for this one request
-        }, callback);
-        */
+
         xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 callback(JSON.parse(this.responseText));
