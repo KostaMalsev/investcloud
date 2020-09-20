@@ -29,17 +29,16 @@ server.use((req, res, next) => {
     next()
 });
 
-// Use default router
-server.listen(port, () => {
-    getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
-        putRequest(data, 'https://investcloud.herokuapp.com/db',
-            () => {
-                console.log('Restored from backup.')
-            });
-    });
+getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
+    putRequest(data, 'https://investcloud.herokuapp.com/db',
+        () => {
+            console.log('Restored from backup.')
+        });
 });
 
 
+// Use default router
+server.listen(port);
 
 // HTTP Request
     function getRequest(url, callback) {
