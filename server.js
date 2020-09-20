@@ -25,6 +25,14 @@ server.use((req, res, next) => {
 
         //req.body.createdAt = Date.now()
     }
+    else {
+        getRequest('https://investcloud.herokuapp.com/profile', (data) => {
+            putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285',
+                () => {
+                    console.log('Created backup. In else {} loop')
+                });
+        });
+    }
     // Continue to JSON Server router
     next()
 });
@@ -34,7 +42,7 @@ server.listen(port, () => {
     getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
         putRequest(data, 'https://investcloud.herokuapp.com/profile',
             () => {
-                console.log('Created backup.')
+                console.log('Restored from backup.')
             });
     });
 });
