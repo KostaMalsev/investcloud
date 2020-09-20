@@ -12,10 +12,12 @@ server.use(router);
 server.use(jsonServer.bodyParser)
 server.use((req, res, next) => {
   //Change to enabgle remote storage CHANGE_200920
+  /*
   if (req.method === 'POST' || req.method === 'PUT') {
     getRequest('https://investcloud.herokuapp.com/db', (data)) => {
       putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', () => { console.log('Created backup.') })
     })
+    */
   //req.body.createdAt = Date.now()
   }
   // Continue to JSON Server router
