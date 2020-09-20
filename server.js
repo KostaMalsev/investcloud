@@ -30,6 +30,13 @@ server.use((req, res, next) => {
 });
 
 
+getRequest('https://investcloud.herokuapp.com/db', (data) => {
+    putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285',
+        () => {
+            console.log('Created backup.')
+        });
+});
+
 // Use default router
 server.listen(port, () => {
     getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
