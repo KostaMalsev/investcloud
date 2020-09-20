@@ -16,7 +16,7 @@ server.use(jsonServer.bodyParser);
 server.use((req, res, next) => {
     //Change to enable remote storage CHANGE_200920
     if (req.method === 'POST') {
-        getRequest('https://investcloud.herokuapp.com/db', (data) => {
+        getRequest('https://investcloud.herokuapp.com/profile', (data) => {
             putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285',
                 () => {
                     console.log('Created backup.')
@@ -30,13 +30,13 @@ server.use((req, res, next) => {
 });
 
 // Use default router
-server.listen(port);
-
-getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
-    putRequest(data, 'https://investcloud.herokuapp.com/posts/0',
-        () => {
-            console.log('Created backup.')
-        });
+server.listen(port, () => {
+    getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
+        putRequest(data, 'https://investcloud.herokuapp.com/profile',
+            () => {
+                console.log('Created backup.')
+            });
+    });
 });
 
 // HTTP Request
