@@ -10,6 +10,7 @@ var AfterRestore=false;
 server.use(jsonServer.bodyParser)
 server.use(middlewares);
 
+/*
 server.use((req, res,next) => {
 
     //Change to enable remote storage CHANGE_200920
@@ -33,16 +34,19 @@ server.use((req, res,next) => {
     // Continue to JSON Server router
     next()
 });
+ */
+
 
 server.use(router);
 // Use default router
 server.listen(port, () => {
     console.log('Started restoration...');
+/*
     //let data = await getRequest(url, (d) => {return d});
     getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
         data.forEach(function(row, index) {
             postRequest(row, 'https://investcloud.herokuapp.com/posts', () => {
-                console.log('Posting user num. '+index.toString());
+                //console.log('Posting user num. '+index.toString());
                 console.log("restoring row usr");
 
                 let comments_url = 'https://jsonblob.com/api/893223c1-fc27-11ea-a8f0-8decf7d8c81c';
@@ -60,7 +64,9 @@ server.listen(port, () => {
 
         });
     });
+*/
 });
+
 
 
 // HTTP Request
