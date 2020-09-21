@@ -42,6 +42,7 @@ server.use(router);
 // Use default router
 server.listen(port, () => {
     console.log('Started restoration...');
+    /*
     //let data = await getRequest(url, (d) => {return d});
     getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
         data.forEach(function(row, index) {
@@ -64,6 +65,7 @@ server.listen(port, () => {
 
         });
     });
+     */
 });
 
 
