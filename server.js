@@ -32,6 +32,15 @@ var db = require('./db.json');//handle to the db file
 
 //server.use((req, res, next) => {
 server.use(jsonServer.bodyParser)
+
+
+//Trying express framework:
+server.get((req, res,next) => {
+    console.log("KOSTA in GET function");
+    next()
+});
+
+
 server.use((req, res,next) => {
     //Change to enable remote storage CHANGE_200920
     console.log("KOSTA in function");
