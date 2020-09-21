@@ -5,16 +5,21 @@ const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 3000;
 var XMLHttpRequest = require('xhr2');
 
+var AfterRestore=false;
+
 server.use(jsonServer.bodyParser)
 server.use(middlewares);
 
 server.use((req, res,next) => {
     //Change to enable remote storage CHANGE_200920
-    if (req.method === 'POST') {
+
+    let post_url_usr = 'https://investcloud.herokuapp.com/posts';
+    if ((req.method === 'POST') && (req.baseUrl=== post_url_usr) && (!AfterRestore)) {
         console.log('Creating backup...');
-        getRequest('https://investcloud.herokuapp.com/posts', (data) => {
+        getRequest(post_url_usr, (data) => {
             putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', () => {
                     console.log('Created backup.');
+                AfterRestore=true;
             });
         });
     }
@@ -75,3 +80,5 @@ function httpRequest(type, url, data) {
         xmlhttp.send(type == 'POST' || type == 'PUT' ? JSON.stringify(data) : null);
     }
 }
+*/
+
