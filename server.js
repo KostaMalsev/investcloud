@@ -110,16 +110,16 @@ server.listen(port, () => {
         xmlhttp.send(JSON.stringify(data));
     }
 
-var faker = require('faker');
+//var faker = require('faker');
 
 function generateData () {
     var messages = [];
     for (var id = 0; id < 10; id++) {
-        let priority = faker.random.number({min: 1, max: 2});
-        let date = faker.date.between("2018-01-01", "2018-07-31").toISOString().split("T")[0];
-        let fromId = faker.random.number({min: 1000, max: 9999})
-        let message = faker.hacker.phrase();
-        let status = faker.random.number(1);
+        let priority = 1;//faker.random.number({min: 1, max: 2});
+        let date = "2018-01-01";//faker.date.between("2018-01-01", "2018-07-31").toISOString().split("T")[0];
+        let fromId = 1000;//faker.random.number({min: 1000, max: 9999})
+        let message = "Stamm";//faker.hacker.phrase();
+        let status = 22;//faker.random.number(1);
         messages.push({
             "id": id,
             "from_userId": fromId,
