@@ -34,7 +34,7 @@ server.listen(port, () => {
                 let comments_url = 'https://jsonblob.com/893223c1-fc27-11ea-a8f0-8decf7d8c81c';
                 //Restore the simulation settings:
                 getRequest(comments_url, (data) => {
-                    postRequest(row, 'https://investcloud.herokuapp.com/posts', () => {
+                    postRequest(data, 'https://investcloud.herokuapp.com/posts', () => {
                         console.log('Restored sim variables from backup.');
                         console.log('Restored user answeres from backup.');
                     });
