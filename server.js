@@ -48,9 +48,8 @@ server.put('/profile',(req, res,next) => {
 server.use(middlewares);
 server.use((req, res,next) => {
     //Change to enable remote storage CHANGE_200920
-    console.log('KOSTA in express function');
-    /*
     if (req.method === 'POST') {
+        console.log('KOSTA in express function');
         getRequest('https://investcloud.herokuapp.com/profile', (data) => {
             putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285',
                 () => {
@@ -67,16 +66,11 @@ server.use((req, res,next) => {
          //       });
         //});
     }
-    */
-
     // Continue to JSON Server router
     next()
 });
 
 
-//if(Math.floor((server_start_time - Date.now())/ 1000/3600) > 1)
-//{
-//}
 
 server.use(router);
 // Use default router
