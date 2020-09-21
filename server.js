@@ -47,38 +47,31 @@ server.listen(port, () => {
 });
 
 // HTTP Request
-function getRequest(url, callback) {
-    var xmlhttp = new XMLHttpRequest();
-
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            callback(JSON.parse(this.responseText));
-        }
-    };
-    xmlhttp.open('GET', url, true);
-    xmlhttp.send();
+/*
+Example usage:
+async function a() {
+    var data = await httpRequest('GET', 'https://investcloud.herokuapp.com/comments');
+    //          /\
+    //           |   Adding an "await" parameter to the start of the request stops all the code in the func
+    console.log(data); // Therefore "data" will not be undefined.
+    
+    var post = httpRequest('POST', 'https://investcloud.herokuapp.com/comments', '{ 'a': 'b' }');
+    //           ?
+    //           | Without an await parameter, httpRequest will run in the background. The rest of the code will continue running
+    console.log(post); // Therefore "post" will be undefined.
 }
+/*
 
-function putRequest(data, url, callback) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            callback(this.responseText);
-        }
-    };
-    xmlhttp.open('PUT', url, true);
-    xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    xmlhttp.send(JSON.stringify(data));
-}
-
-function postRequest(data, url, callback) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            callback(this.responseText);
-        }
-    };
-    xmlhttp.open('POST', url, true);
-    xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    xmlhttp.send(JSON.stringify(data));
+function httpRequest(type, url, data) {
+    return new Promise(resolve => {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                resolve(JSON.parse(this.responseText));
+            }
+        };
+        xmlhttp.open(type, url, true);
+        xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xmlhttp.send(type == 'POST' || type == 'PUT' ? JSON.stringify(data) : null);
+    }
 }
