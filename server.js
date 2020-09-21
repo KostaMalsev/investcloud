@@ -23,7 +23,7 @@ var db = require('./db.json');//handle to the db file
 server.use(jsonServer.bodyParser)
 
 //server.use((req, res, next) => {
-server.post('/post/profile', (req, res) => {
+server.post('/profile', (req, res) => {
     //Change to enable remote storage CHANGE_200920
     console.log("KOSTA POST");
     /*
