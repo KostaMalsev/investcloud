@@ -23,9 +23,10 @@ var db = require('./db.json');//handle to the db file
 server.use(jsonServer.bodyParser)
 
 //server.use((req, res, next) => {
-server.post("/post/profile", (req, res) => {
+server.post('/post/profile', (req, res) => {
     //Change to enable remote storage CHANGE_200920
     console.log("KOSTA POST");
+    /*
     if (req.method === 'POST') {
         getRequest('https://investcloud.herokuapp.com/profile', (data) => {
             putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285',
@@ -33,7 +34,6 @@ server.post("/post/profile", (req, res) => {
                     console.log('Created backup.');
                 });
         });
-
         //req.body.createdAt = Date.now()
     }
     else {
@@ -44,6 +44,8 @@ server.post("/post/profile", (req, res) => {
          //       });
         //});
     }
+    */
+
     // Continue to JSON Server router
     next()
 });
