@@ -31,7 +31,7 @@ var db = require('./db.json');//handle to the db file
 
 
 //server.use((req, res, next) => {
-server.use('./profile', (req, res) => {
+server.use((req, res) => {
     //Change to enable remote storage CHANGE_200920
     console.log("KOSTA in function");
     /*
