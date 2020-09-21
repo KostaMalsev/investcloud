@@ -78,10 +78,21 @@ server.use(router);
 server.listen(port, () => {
     getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
         //putRequest(data, 'https://investcloud.herokuapp.com/profile',
-        //    () => {
-         //       console.log('Restored from backup.') });
-        db = generateData();
-        console.log('Restored from backup.');
+        patchRequest(data, 'https://investcloud.herokuapp.com/posts/1',
+            () => {
+                db = {
+                    "authors": [
+                        { "id": 1, "name": "Michiel Mulders", "genre": "fiction" }
+                    ],
+                    "books": [
+                        { "id": 1, "title": "some title", "authorId": 1 }
+                    ],
+                    "library": { "name": "City library" }
+                };
+                console.log('Restored from backup.')
+        });
+        //db = generateData();
+        //console.log('Restored from backup.');
     });
 });
 
@@ -109,6 +120,42 @@ server.listen(port, () => {
         xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xmlhttp.send(JSON.stringify(data));
     }
+
+function postRequest(data, url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            callback(this.responseText);
+        }
+    };
+    xmlhttp.open('POST', url, true);
+    xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xmlhttp.send(JSON.stringify(data));
+}
+
+function delRequest(data, url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            callback(this.responseText);
+        }
+    };
+    xmlhttp.open('DELETE', url, true);
+    xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xmlhttp.send(JSON.stringify(data));
+}
+
+function patchRequest(data, url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            callback(this.responseText);
+        }
+    };
+    xmlhttp.open('PATCH', url, true);
+    xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xmlhttp.send(JSON.stringify(data));
+}
 
 //var faker = require('faker');
 
