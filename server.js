@@ -3,26 +3,27 @@ const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 3000;
-
 //const http_ = require('http');//for built in http support
 var XMLHttpRequest = require('xhr2');
-
-var db = require('./db.json');//handle to the db file
-//let result = db.posts.find(user => {
-//    return user.userId == userId;
-//})
 
 
 server.use(middlewares);
 server.use(router);
 //server.listen(port);
 
+let server_start_time=0;
+
+var db = require('./db.json');//handle to the db file
+//let result = db.posts.find(user => {
+//    return user.userId == userId;
+//})
+
 // To handle POST, PUT and PATCH you need to use a body-parser
 // You can use the one used by JSON Server
 server.use(jsonServer.bodyParser)
 
 //server.use((req, res, next) => {
-router.post("/profile", (req, res) => {
+server.post("/post/profile", (req, res) => {
     //Change to enable remote storage CHANGE_200920
     console.log("KOSTA POST");
     if (req.method === 'POST') {
@@ -46,6 +47,11 @@ router.post("/profile", (req, res) => {
     // Continue to JSON Server router
     next()
 });
+
+
+//if(Math.floor((server_start_time - Date.now())/ 1000/3600) > 1)
+//{
+//}
 
 // Use default router
 server.listen(port, () => {
