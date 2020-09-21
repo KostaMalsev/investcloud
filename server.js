@@ -9,6 +9,14 @@ var XMLHttpRequest = require('xhr2');
 
 server.use(middlewares);
 server.use(router);
+
+
+//Create custom route (api) access is by url:"http:://get/users/user_to_find":
+//server.use(jsonServer.rewriter({
+//    '/api/users': '/users'
+//}));
+//server.use(jsonServer.bodyParser)
+
 //server.listen(port);
 
 let server_start_time=0;
@@ -20,12 +28,12 @@ var db = require('./db.json');//handle to the db file
 
 // To handle POST, PUT and PATCH you need to use a body-parser
 // You can use the one used by JSON Server
-server.use(jsonServer.bodyParser)
+
 
 //server.use((req, res, next) => {
-server.post('/profile', (req, res) => {
+server.use('./profile', (req, res) => {
     //Change to enable remote storage CHANGE_200920
-    console.log("KOSTA POST");
+    console.log("KOSTA in function");
     /*
     if (req.method === 'POST') {
         getRequest('https://investcloud.herokuapp.com/profile', (data) => {
