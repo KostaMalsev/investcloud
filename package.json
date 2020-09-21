@@ -12,17 +12,8 @@
   ],
   "author": "Jesper Orb",
   "license": "ISC",
-  "dependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/KostaMalsev/investcloud.git"
-  },
-  "bugs": {
-    "url": "https://github.com/KostaMalsev/investcloud/issues"
-  },
-  "homepage": "https://github.com/KostaMalsev/investcloud#readme",
-  "devDependencies": {
-    "json-server": "^0.12.2",
-    "xhr2": "^0.2.0"
+  "dependencies": {
+    "json-server": "^0.12.1",
+    "xhr2": "*"
   }
 }
