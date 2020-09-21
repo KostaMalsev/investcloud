@@ -41,10 +41,13 @@ server.listen(port, () => {
     getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
         data.forEach(function(row, index) {
             postRequest(row, 'https://investcloud.herokuapp.com/posts', () => {
-                console.log('Posting user num. '+index);
+                console.log('Posting user num. '+index.toString());
+                console.log("restoring row usr");
+
                 let comments_url = 'https://jsonblob.com/api/893223c1-fc27-11ea-a8f0-8decf7d8c81c';
                 //Restore the simulation settings:
                 getRequest(comments_url, (data) => {
+                    console.log('restoring sim params');
                     postRequest(data, 'https://investcloud.herokuapp.com/comments', () => {
                         console.log('Restored sim variables from backup.');
                         console.log('Restored user answeres from backup.');
