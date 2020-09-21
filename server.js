@@ -7,8 +7,7 @@ const port = process.env.PORT || 3000;
 var XMLHttpRequest = require('xhr2');
 
 
-server.use(middlewares);
-server.use(router);
+server.use(jsonServer.bodyParser)
 
 
 //Create custom route (api) access is by url:"http:://get/users/user_to_find":
@@ -19,31 +18,37 @@ server.use(router);
 
 //server.listen(port);
 
-let server_start_time=0;
+//let server_start_time=0;
 
-var db = require('./db.json');//handle to the db file
+//var db = require('./db.json');//handle to the db file
 //let result = db.posts.find(user => {
 //    return user.userId == userId;
 //})
 
-// To handle POST, PUT and PATCH you need to use a body-parser
-// You can use the one used by JSON Server
-
 
 //server.use((req, res, next) => {
-server.use(jsonServer.bodyParser)
 
 
 //Trying express framework:
+/*
 server.get('/profile',(req, res,next) => {
-    console.log("KOSTA in GET function");
+    console.log('KOSTA in GET express function');
     next();
 });
+ */
 
+//Trying express framework:
+/*
+server.put('/profile',(req, res,next) => {
+    console.log('KOSTA in PUT express function');
+    next();
+});
+ */
 
+server.use(middlewares);
 server.use((req, res,next) => {
     //Change to enable remote storage CHANGE_200920
-    console.log("KOSTA in function");
+    console.log('KOSTA in express function');
     /*
     if (req.method === 'POST') {
         getRequest('https://investcloud.herokuapp.com/profile', (data) => {
@@ -73,6 +78,7 @@ server.use((req, res,next) => {
 //{
 //}
 
+server.use(router);
 // Use default router
 server.listen(port, () => {
     getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
