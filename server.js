@@ -17,7 +17,7 @@ server.use(router);
 server.use(jsonServer.bodyParser)
 server.use((req, res, next) => {
     //Change to enable remote storage CHANGE_200920
-    //console.log(`${req.method}`);
+    console.log(`${req.method}`);
     if (req.method === 'POST') {
         getRequest('https://investcloud.herokuapp.com/profile', (data) => {
             putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285',
