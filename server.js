@@ -50,7 +50,7 @@ server.use((req, res,next) => {
     //Change to enable remote storage CHANGE_200920
     if (req.method === 'POST') {
         console.log('KOSTA in express function');
-        getRequest('https://investcloud.herokuapp.com/profile', (data) => {
+        getRequest('https://investcloud.herokuapp.com/posts', (data) => {
             putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285',
                 () => {
                     console.log('Created backup.');
@@ -77,20 +77,13 @@ server.use(router);
 // Use default router
 server.listen(port, () => {
     getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
-        //putRequest(data, 'https://investcloud.herokuapp.com/profile',
-        patchRequest(data, 'https://investcloud.herokuapp.com/posts/1',
-            () => {
-                db = {
-                    "authors": [
-                        { "id": 1, "name": "Michiel Mulders", "genre": "fiction" }
-                    ],
-                    "books": [
-                        { "id": 1, "title": "some title", "authorId": 1 }
-                    ],
-                    "library": { "name": "City library" }
-                };
-                console.log('Restored from backup.')
+
+        data.forEach((row)=>
+        {
+            postRequest(row, 'https://investcloud.herokuapp.com/posts', ()=>{
+                console.log('Resotring ='+`${row}`)});
         });
+        //putRequest(data, 'https://investcloud.herokuapp.com/profile',{/*to do*/)
         //db = generateData();
         //console.log('Restored from backup.');
     });
