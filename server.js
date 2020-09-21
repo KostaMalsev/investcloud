@@ -25,8 +25,8 @@ server.use((req, res,next) => {
 server.use(router);
 // Use default router
 server.listen(port, () => {
+    console.log('Started restoration...');
     getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
-        console.log('Started restoration...')
         data.forEach(function(row, index) {
             postRequest(row, 'https://investcloud.herokuapp.com/posts', () => {
                 console.log('Posting user num. '+index);
