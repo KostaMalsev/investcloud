@@ -11,6 +11,7 @@ server.use(jsonServer.bodyParser)
 server.use(middlewares);
 
 server.use((req, res,next) => {
+
     //Change to enable remote storage CHANGE_200920
     console.log('Creating backup...');
     let post_url_usr = 'https://investcloud.herokuapp.com/posts';
