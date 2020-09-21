@@ -14,14 +14,20 @@ server.use((req, res,next) => {
     //Change to enable remote storage CHANGE_200920
     console.log('Creating backup...');
     let post_url_usr = 'https://investcloud.herokuapp.com/posts';
-    if ((req.method === 'POST') && (req.baseUrl=== post_url_usr) && (!AfterRestore)) {
-        console.log('Creating backup...');
+    if ((req.method === 'POST') && (req.baseUrl=== post_url_usr) && (AfterRestore)) {
+        console.log('Creating backup inside if...');
         getRequest(post_url_usr, (data) => {
             putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', () => {
-                    console.log('Created backup.');
-                AfterRestore=true;
+                    console.log('Created usr answers backup.');
             });
         });
+    }else{
+        let comments_url = 'https://jsonblob.com/api/893223c1-fc27-11ea-a8f0-8decf7d8c81c';
+        if(req.baseUrl === comments_url)
+        {
+            putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', () => {
+                console.log('Created sim param backup.');});
+        }
     }
     // Continue to JSON Server router
     next()
@@ -42,6 +48,7 @@ server.listen(port, () => {
                     postRequest(data, 'https://investcloud.herokuapp.com/comments', () => {
                         console.log('Restored sim variables from backup.');
                         console.log('Restored user answeres from backup.');
+                        AfterRestore=true;
                     });
 
                 });
