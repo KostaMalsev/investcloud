@@ -26,13 +26,23 @@ server.use(router);
 // Use default router
 server.listen(port, () => {
     console.log('Started restoration...');
+    //let data = await getRequest(url, (d) => {return d});
     getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
         data.forEach(function(row, index) {
             postRequest(row, 'https://investcloud.herokuapp.com/posts', () => {
                 console.log('Posting user num. '+index);
+                let comments_url = 'https://jsonblob.com/893223c1-fc27-11ea-a8f0-8decf7d8c81c';
+                //Restore the simulation settings:
+                getRequest(comments_url, (data) => {
+                    postRequest(row, 'https://investcloud.herokuapp.com/posts', () => {
+                        console.log('Restored sim variables from backup.');
+                        console.log('Restored user answeres from backup.');
+                    });
+
+                });
             });
+
         });
-        console.log('Restored from backup.');
     });
 });
 
