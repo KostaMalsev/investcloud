@@ -12,7 +12,7 @@ server.use(middlewares);
 
 server.use((req, res,next) => {
     //Change to enable remote storage CHANGE_200920
-
+    console.log('Creating backup...');
     let post_url_usr = 'https://investcloud.herokuapp.com/posts';
     if ((req.method === 'POST') && (req.baseUrl=== post_url_usr) && (!AfterRestore)) {
         console.log('Creating backup...');
@@ -50,6 +50,47 @@ server.listen(port, () => {
         });
     });
 });
+
+
+// HTTP Request
+function getRequest(url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            callback(JSON.parse(this.responseText));
+        }
+    };
+    xmlhttp.open('GET', url, true);
+    xmlhttp.send();
+}
+
+function putRequest(data, url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            callback(this.responseText);
+        }
+    };
+    xmlhttp.open('PUT', url, true);
+    xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xmlhttp.send(JSON.stringify(data));
+}
+
+function postRequest(data, url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            callback(this.responseText);
+        }
+    };
+    xmlhttp.open('POST', url, true);
+    xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xmlhttp.send(JSON.stringify(data));
+}
+
+
+
 
 // HTTP Request
 /*
