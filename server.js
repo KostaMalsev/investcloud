@@ -21,7 +21,7 @@ server.use(router);
 // You can use the one used by JSON Server
 server.use(jsonServer.bodyParser)
 //server.use((req, res, next) => {
-server.post('/post/user', (req, res) => {
+server.post('/profile', (req, res) => {
     //Change to enable remote storage CHANGE_200920
     console.log("KOSTA POST");
     if (req.method === 'POST') {
