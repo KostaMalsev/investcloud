@@ -35,9 +35,9 @@ server.use(jsonServer.bodyParser)
 
 
 //Trying express framework:
-server.get((req, res,next) => {
+server.get('/profile',(req, res,next) => {
     console.log("KOSTA in GET function");
-    next()
+    next();
 });
 
 
