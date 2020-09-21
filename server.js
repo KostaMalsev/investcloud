@@ -5,7 +5,7 @@ const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 3000;
 var XMLHttpRequest = require('xhr2');
 
-var AfterRestore=false;
+//var AfterRestore=false;
 
 server.use(jsonServer.bodyParser)
 server.use(middlewares);
