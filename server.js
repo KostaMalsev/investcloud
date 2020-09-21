@@ -7,6 +7,11 @@ const port = process.env.PORT || 3000;
 //const http_ = require('http');//for built in http support
 var XMLHttpRequest = require('xhr2');
 
+var db = require('./db.json');//handle to the db file
+//let result = db.posts.find(user => {
+//    return user.userId == userId;
+//})
+
 
 server.use(middlewares);
 server.use(router);
@@ -18,7 +23,7 @@ server.use(jsonServer.bodyParser)
 //server.use((req, res, next) => {
 server.post('/post/user', (req, res) => {
     //Change to enable remote storage CHANGE_200920
-    console.log(`${req.method}`);
+    console.log("KOSTA POST");
     if (req.method === 'POST') {
         getRequest('https://investcloud.herokuapp.com/profile', (data) => {
             putRequest(data, 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285',
