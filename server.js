@@ -18,7 +18,7 @@ server.use(middlewares);
 const usr_backup_url = 'https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285';
 const sim_param_backup_url = 'https://jsonblob.com/api/893223c1-fc27-11ea-a8f0-8decf7d8c81c';
 const usr_data_url = 'https://investcloud.herokuapp.com/posts';
-const sim_param_url = 'https://investcloud.herokuapp.com/comments';
+const sim_param_url = 'https://investcloud.herokuapp.com/comments/1';
 
 
 //Catch POST events:
@@ -36,7 +36,7 @@ server.use( async (req, res,next) => {
                 console.log('Finished creating backup for user data...');
             }
             //If it's simulation params create a backup :
-            if (req.url == "/comments/") {
+            if (req.url == "/comments/1") {
                 console.log('Started creating backup for sim data...');
                 //Get the data from in memory db:
                 var data = await httpRequest('GET', sim_param_url, '');
@@ -68,7 +68,7 @@ server.listen(port, async () => {
     //Fetch comments from remote archive:
     var comments_data = await httpRequest('GET', sim_param_backup_url);
     //Push it to the in-memory db:
-    var res = await httpRequest('POST', sim_param_url, comments_data);
+    var res = await httpRequest('PUT', sim_param_url, comments_data);
     Restoring = false;//finished restoring
     console.log('Finished restoration...');
 })
