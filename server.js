@@ -31,14 +31,14 @@ server.use( async (req, res,next) => {
 
     //Making the backup data for user answers and sim data:
     if (req.method === 'POST') {
-            if (req.req.baseUrl == usr_data_url) {
+            if (req.baseUrl == usr_data_url) {
                 //Get the data from in memory db:
                 var data = await httpRequest('GET', usr_data_url, '');
                 //Store backup at remote db:
                 var responce = await httpRequest('PUT', usr_backup_url, data);
             }
             //If it's simulation params create a backup :
-            if (req.req.baseUrl == sim_param_url) {
+            if (req.baseUrl == sim_param_url) {
                 //Get the data from in memory db:
                 var data = await httpRequest('GET', sim_param_url, '');
                 //Store backup at remote db:
