@@ -24,22 +24,25 @@ const sim_param_url = 'https://investcloud.herokuapp.com/comments';
 //Catch POST events:
 server.use( async (req, res,next) => {
     //Change to enable remote storage CHANGE_200920
-    
+
     //Making the backup data for user answers and sim data:
     if (req.method === 'POST' && (!Restoring)) {
-        console.log('Creating backup...');
-            if (req.baseUrl == usr_data_url) {
+            if (req.url == "/posts/") {
+                console.log('Creating backup for user data...');
                 //Get the data from in memory db:
                 var data = await httpRequest('GET', usr_data_url, '');
                 //Store backup at remote db:
                 var responce = await httpRequest('PUT', usr_backup_url, data);
+                console.log('Finished creating backup for user data...');
             }
             //If it's simulation params create a backup :
-            if (req.baseUrl == sim_param_url) {
+            if (req.url == "/comments/") {
+                console.log('Started creating backup for sim data...');
                 //Get the data from in memory db:
                 var data = await httpRequest('GET', sim_param_url, '');
                 //Store backup at remote db:
                 var responce = await httpRequest('PUT', sim_param_backup_url, data);
+                console.log('Finished creating backup for sim data...');
             }
         }
     next();
