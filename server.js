@@ -25,6 +25,7 @@ const sim_param_url = 'https://investcloud.herokuapp.com/comments';
 server.use( async (req, res,next) => {
     //Change to enable remote storage CHANGE_200920
     console.log('Creating backup...');
+
     //Dont perform archive if resotring:
     if(Restoring) next();
 
