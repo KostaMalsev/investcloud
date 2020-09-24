@@ -1,14 +1,19 @@
 const jsonServer = require('json-server');
 const server = jsonServer.create();
-const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
+
 const port = process.env.PORT || 3000;
+
+//Using for http handling:
 var XMLHttpRequest = require('xhr2');
+
+//For db backup:
+const cron = require('node-cron');
 
 var Restoring=false;
 
-
-server.use(jsonServer.bodyParser)
+//Using body parser:// TBD
+server.use(jsonServer.bodyParser);
 
 //Using middlewares with express:
 server.use(middlewares);
@@ -20,91 +25,54 @@ const sim_param_backup_url = 'https://jsonblob.com/api/893223c1-fc27-11ea-a8f0-8
 const usr_data_url = 'https://investcloud.herokuapp.com/posts';
 const sim_param_url = 'https://investcloud.herokuapp.com/comments/1';
 
+const db_url = 'http://investcloudbaba.oss-eu-central-1.aliyuncs.com/investDB/db.json';//on alibaba cloud
+var db = {};
 
-//Catch POST events:
+//const router = jsonServer.router(db);
+var router = null;
+
+
+//Perfrom server startup
+Startup(db_url);
+//Original
+//const router = jsonServer.router('db.json');
+
+
+//Handle requests with express:
 server.use( async (req, res,next) => {
-    //Change to enable remote storage CHANGE_200920
-
-    //Making the backup data for user answers and sim data:
-    if (req.method === 'POST' && (!Restoring)) {
-            if (req.url == "/posts/") {
-                console.log('Creating backup for user data...');
-                //Get the data from in memory db:
-                var data = await httpRequest('GET', usr_data_url, '');
-                //Store backup at remote db:
-                var responce = await httpRequest('PUT', usr_backup_url, data);
-                console.log('Finished creating backup for user data...');
-            }
-            //If it's simulation params create a backup :
-            if (req.url == "/comments/1") {
-                console.log('Started creating backup for sim data...');
-                //Get the data from in memory db:
-                var data = await httpRequest('GET', sim_param_url, '');
-                //Store backup at remote db:
-                var responce = await httpRequest('PUT', sim_param_backup_url, data);
-                console.log('Finished creating backup for sim data...');
-            }
-        }
+    //if post, backup the DB
+    if (req.method === 'POST') {
+        BackupDB();
+    }
     next();
 });
 
+//Perform server startup:
+async function Startup(db_url)
+{
+    db = (await httpRequest('GET', db_url));
+    router = jsonServer.router(db);
 
+    // Use default router
+    server.use(router);
 
-// Use default router
-server.use(router);
+    //Run backup DB job every 30 minutes
+    cron.schedule('55 * * * *', BackupDB);
 
-//Start listen to port:
-server.listen(port, async () => {
-
-    //Perform Restore on start:
-    console.log('Started restoration...');
-    Restoring = true;//mark the restorations started
-    //Fetch backup from remote archive:
-    var data = await httpRequest('GET', usr_backup_url);
-    //Push rows of data to app db:
-    data.forEach(async function (row, index) {
-        var res = await httpRequest('POST', usr_data_url, row);
-    });
-    //Fetch comments from remote archive:
-    var comments_data = await httpRequest('GET', sim_param_backup_url);
-    //Push it to the in-memory db:
-    var res = await httpRequest('PUT', sim_param_url, comments_data);
-    Restoring = false;//finished restoring
-    console.log('Finished restoration...');
-})
+    //Start listen to port:
+    //server.listen(port, DBRestore)
+    server.listen(port, ()=>{console.log("Restored from backup")});
+}
 
 
 
-
-
-
-
-
-
-/*
-    //let data = await getRequest(url, (d) => {return d});
-    getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
-        data.forEach(function(row, index) {
-            postRequest(row, 'https://investcloud.herokuapp.com/posts', () => {
-                //console.log('Posting user num. '+index.toString());
-                console.log("restoring row usr");
-                let comments_url = 'https://jsonblob.com/api/893223c1-fc27-11ea-a8f0-8decf7d8c81c';
-                //Restore the simulation settings:
-                getRequest(comments_url, (data) => {
-                    console.log('restoring sim params');
-                    postRequest(data, 'https://investcloud.herokuapp.com/comments', () => {
-                        console.log('Restored sim variables from backup.');
-                        console.log('Restored user answeres from backup.');
-                        AfterRestore=true;
-                    });
-
-                });
-            });
-
-        });
-    });
-});
-*/
+//Backup db to url (to cloud storage)
+async function BackupDB()
+{
+    //var data = await httpRequest('GET', usr_data_url, '');
+    var response = httpRequest('PUT', db_url, db);
+    console.log("Backing DB to cloud");
+}
 
 
 
@@ -127,17 +95,61 @@ function httpRequest(type, url, data) {
 }
 
 
+//------------------------------------------
+/*
 
+//Catch events:
+server.use( async (req, res,next) => {
+    //Change to enable remote storage CHANGE_200920
 
+    //Making the backup data for user answers and sim data:
+    if (req.method === 'POST' && (!Restoring)) {
+        if (req.url == "/posts/") {
+            console.log('Creating backup for user data...');
+            //Get the data from in memory db:
+            var data = await httpRequest('GET', usr_data_url, '');
+            //Store backup at remote db:
+            var responce = await httpRequest('PUT', usr_backup_url, data);
+            console.log('Finished creating backup for user data...');
+        }
+        //If it's simulation params create a backup :
+        if (req.url == "/comments/1") {
+            console.log('Started creating backup for sim data...');
+            //Get the data from in memory db:
+            var data = await httpRequest('GET', sim_param_url, '');
+            //Store backup at remote db:
+            var responce = await httpRequest('PUT', sim_param_backup_url, data);
+            console.log('Finished creating backup for sim data...');
+        }
+    }
+    next();
+});
 
+*/
 
+/*
+//Function Restores the DB
+async function DBRestore()
+{
+    //Perform Restore on start:
+    console.log('Started restoration...');
+    Restoring = true;//mark the restorations started
+    //Fetch backup from remote archive:
+    var data = await httpRequest('GET', usr_backup_url);
+    //Push rows of data to app db:
+    data.forEach(async function (row, index) {
+        var res = await httpRequest('POST', usr_data_url, row);
+    });
+    //Fetch comments from remote archive:
+    var comments_data = await httpRequest('GET', sim_param_backup_url);
+    //Push it to the in-memory db:
+    var res = await httpRequest('PUT', sim_param_url, comments_data);
+    Restoring = false;//finished restoring
+    console.log('Finished restoration...');
+}
+*/
 
-
-
-
-
-
-
+/*
 // HTTP Request
 function getRequest(url, callback) {
     var xmlhttp = new XMLHttpRequest();
@@ -175,6 +187,26 @@ function postRequest(data, url, callback) {
     xmlhttp.send(JSON.stringify(data));
 }
 
+*/
+
+
+//Use remote dba:
+//http://investcloudbaba.oss-eu-central-1.aliyuncs.com/investDB/db.json //on alibaba cloud
+//Using load from web:
+//const requireFromWeb = require('require-from-web')
+//const url = 'http://investcloudbaba.oss-eu-central-1.aliyuncs.com/investDB/db.json';//on alibaba cloud
+//-----------------------------------------
+//async function getServerData() {
+//const router = requireFromWeb(url);
+/*var format = await requireFromWeb(url);
+text = format('Forever {Python}', {Python: 'JavaScript'})
+console.log(text) // Forever JavaScript
+}
+-------------------------------------- */
+
+//var requireFromUrl = require('require-from-url/sync');
+//const db = requireFromUrl("http://investcloudbaba.oss-eu-central-1.aliyuncs.com/investDB/db.json");
+//----------------------------------------
 
 
 
@@ -200,6 +232,33 @@ async function a() {
 
 
 //--------------------------
+
+
+
+/*
+    //let data = await getRequest(url, (d) => {return d});
+    getRequest('https://jsonblob.com/api/jsonBlob/25727a48-fb31-11ea-9b5c-1dd302ffc285', (data) => {
+        data.forEach(function(row, index) {
+            postRequest(row, 'https://investcloud.herokuapp.com/posts', () => {
+                //console.log('Posting user num. '+index.toString());
+                console.log("restoring row usr");
+                let comments_url = 'https://jsonblob.com/api/893223c1-fc27-11ea-a8f0-8decf7d8c81c';
+                //Restore the simulation settings:
+                getRequest(comments_url, (data) => {
+                    console.log('restoring sim params');
+                    postRequest(data, 'https://investcloud.herokuapp.com/comments', () => {
+                        console.log('Restored sim variables from backup.');
+                        console.log('Restored user answeres from backup.');
+                        AfterRestore=true;
+                    });
+
+                });
+            });
+
+        });
+    });
+});
+*/
 /*
   let post_url_usr = 'https://investcloud.herokuapp.com/posts';
   if ((req.method === 'POST') && (req.baseUrl=== post_url_usr) && (AfterRestore)) {
